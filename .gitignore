@@ -1,0 +1,44 @@
+# Data directory - contains large CSV and parquet files
+/data/raw/
+/data/interim/
+/data/processed/
+
+# Model artifacts directory - contains trained models and mappings
+/artefacts/
+*.db
+*.pt
+*.txt
+*.json
+
+# Report figures - potentially large outputs
+/reports/eda/figures/
+/reports/figures/
+/reports
+*.png
+*.pdf
+
+# Jupyter notebook checkpoints
+.ipynb_checkpoints/
+notebooks/.ipynb_checkpoints/
+
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+.venv/
+venv/
+env/
+myenv/
+
+# IDE specific files
+.vscode/
+.idea/
+
+# OS specific files
+.DS_Store
+Thumbs.db
+
+# Local configuration that shouldn't be committed
+config_local.yaml
