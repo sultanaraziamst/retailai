@@ -30,20 +30,20 @@ models:
   forecast:
     bagging_fraction: 0.8224507808606525
     bagging_freq: 10
-    bf: 0.4080675456901738
-    bfreq: 13
+    bf: 0.515481275981484
+    bfreq: 6
     drop_zero_target: true
     early_stopping_rounds: 30
     feature_fraction: 0.8227344112609893
-    ff: 0.3621803088338233
-    l1: 0.0004189119968024943
-    l2: 0.007146279195994392
+    ff: 0.6769366929968098
+    l1: 1.9563647038711986e-05
+    l2: 7.054946602743573
     lambda_l1: 0.4570098424675586
     lambda_l2: 7.6773815425519825
     leaf_min: 5
     learning_rate: 0.28998330671106737
-    leaves: 20
-    lr: 0.07482753672810354
+    leaves: 157
+    lr: 0.03799713478775653
     metric: mae
     min_data_in_leaf: 7
     num_boost_round: 300
@@ -54,8 +54,8 @@ models:
     optuna_timeout_minutes: 20
     optuna_trials: 25
     tuned_model_weighted_path: artefacts/lightgbm_tuned_weighted.pkl
-    tvp: 1.8432648495618793
-    tweedie_variance_power: 1.8432648495618793
+    tvp: 1.8920328265596176
+    tweedie_variance_power: 1.8920328265596176
     use_sample_weight: true
     weighted_model_path: artefacts/lightgbm_weighted.pkl
   optuna_trials: 25
