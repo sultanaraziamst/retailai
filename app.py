@@ -30,7 +30,7 @@ warnings.filterwarnings('ignore')
 # ──────────────────────────────────────────────────────────────────────────────
 st.set_page_config(
     page_title='SmartRocket Analytics – ML Showcase',
-    page_icon='🚀',
+    page_icon='⚡',
     layout='wide',
     initial_sidebar_state='expanded',
 )
@@ -409,7 +409,7 @@ def generate_business_insights(df, metrics=None):
     insights = []
     
     if df.empty:
-        return ["📊 No data available for analysis."]
+        return ["No data available for analysis."]
     
     # Sales insights
     total_sales = df['sales'].sum()
@@ -418,10 +418,10 @@ def generate_business_insights(df, metrics=None):
     worst_day = df.groupby('date')['sales'].sum().idxmin()
     
     insights.extend([
-        f"💰 Total Revenue: ${total_sales:,.2f} across {len(df):,} transactions",
-        f"📈 Daily Average: ${avg_daily_sales:,.2f} per day",
-        f"🏆 Best Sales Day: {best_day.strftime('%Y-%m-%d')} with ${df.groupby('date')['sales'].sum().max():,.2f}",
-        f"📉 Lowest Sales Day: {worst_day.strftime('%Y-%m-%d')} with ${df.groupby('date')['sales'].sum().min():,.2f}"
+        f"Total Revenue: ${total_sales:,.2f} across {len(df):,} transactions",
+        f"Daily Average: ${avg_daily_sales:,.2f} per day",
+        f"Best Sales Day: {best_day.strftime('%Y-%m-%d')} with ${df.groupby('date')['sales'].sum().max():,.2f}",
+        f"Lowest Sales Day: {worst_day.strftime('%Y-%m-%d')} with ${df.groupby('date')['sales'].sum().min():,.2f}"
     ])
     
     # Category insights
@@ -433,8 +433,8 @@ def generate_business_insights(df, metrics=None):
     
     top_category = cat_performance.index[0]
     insights.extend([
-        f"🏆 Top Category: {top_category} (${cat_performance.loc[top_category, 'total_sales']:,.2f})",
-        f"📊 Category Spread: {len(cat_performance)} categories with {cat_performance['transactions'].sum():,} total transactions"
+        f"Top Category: {top_category} (${cat_performance.loc[top_category, 'total_sales']:,.2f})",
+        f"Category Spread: {len(cat_performance)} categories with {cat_performance['transactions'].sum():,} total transactions"
     ])
     
     # Item insights
@@ -446,31 +446,31 @@ def generate_business_insights(df, metrics=None):
     
     top_item = item_performance.index[0]
     insights.extend([
-        f"⭐ Best Selling Item: {top_item} (${item_performance.loc[top_item, 'total_sales']:,.2f})",
-        f"🛒 Average Transaction: ${df['sales'].mean():.2f} per item sale"
+        f"Best Selling Item: {top_item} (${item_performance.loc[top_item, 'total_sales']:,.2f})",
+        f"Average Transaction: ${df['sales'].mean():.2f} per item sale"
     ])
     
     # Model performance insights
     if metrics and 'r2' in metrics:
         if metrics['r2'] > 0.8:
-            insights.append("✅ Model Quality: Excellent forecasting accuracy - predictions are highly reliable")
+            insights.append("Model Quality: Excellent forecasting accuracy - predictions are highly reliable")
         elif metrics['r2'] > 0.6:
-            insights.append("✅ Model Quality: Good forecasting accuracy - suitable for business planning")
+            insights.append("Model Quality: Good forecasting accuracy - suitable for business planning")
         elif metrics['r2'] > 0.4:
-            insights.append("⚠️ Model Quality: Moderate accuracy - use predictions with caution")
+            insights.append("Model Quality: Moderate accuracy - use predictions with caution")
         else:
-            insights.append("❌ Model Quality: Poor accuracy - consider model improvements")
+            insights.append("Model Quality: Poor accuracy - consider model improvements")
         
-        insights.append(f"📊 Prediction Error: {metrics['mape']:.1f}% average error rate")
+        insights.append(f"Prediction Error: {metrics['mape']:.1f}% average error rate")
     
     # Trend insights
     daily_sales = df.groupby('date')['sales'].sum()
     if len(daily_sales) > 1:
         trend = np.polyfit(range(len(daily_sales)), daily_sales.values, 1)[0]
         if trend > 0:
-            insights.append(f"📈 Sales Trend: Growing at ${trend:.2f} per day")
+            insights.append(f"Sales Trend: Growing at ${trend:.2f} per day")
         else:
-            insights.append(f"📉 Sales Trend: Declining at ${abs(trend):.2f} per day")
+            insights.append(f"Sales Trend: Declining at ${abs(trend):.2f} per day")
     
     return insights
 
@@ -626,32 +626,32 @@ def main():
     # Header
     st.markdown("""
     <div class="header-box">
-        <h1>🚀 SmartRocket Analytics</h1>
+        <h1>SmartRocket Analytics</h1>
         <p>Unleashing the Power of ML Models for Real Business Value</p>
     </div>
     """, unsafe_allow_html=True)
     
     # Load data and models
-    with st.spinner("🔄 Loading data and trained models..."):
+    with st.spinner("Loading data and trained models..."):
         forecast_df = load_forecast_data()
         sequences_df = load_sequences_data()
         item_mapping = load_item_mapping()
         models = load_models()
     
     if forecast_df.empty:
-        st.error("❌ No forecast data loaded")
+        st.error("No forecast data loaded")
         return
         
-    st.success(f"✅ **Loaded**: {len(forecast_df):,} sales records, {len(sequences_df):,} user sessions, {len(models)} ML models")
+    st.success(f"Loaded: {len(forecast_df):,} sales records, {len(sequences_df):,} user sessions, {len(models)} ML models")
     
     # =============================================================================
     # SIDEBAR CONTROLS
     # =============================================================================
     
-    st.sidebar.header("🎛️ Control Panel")
+    st.sidebar.header("Control Panel")
     
     # FIXED: Date range picker
-    st.sidebar.subheader("📅 Date Range")
+    st.sidebar.subheader("Date Range")
     min_date = forecast_df['date'].min().date()
     max_date = forecast_df['date'].max().date()
     
@@ -680,7 +680,7 @@ def main():
         st.sidebar.error("Start date must be before end date")
     
     # Category filter with actual data only
-    st.sidebar.subheader("🏷️ Categories")
+    st.sidebar.subheader("Categories")
     categories = sorted(forecast_df['categoryid'].unique())
     selected_categories = st.sidebar.multiselect(
         "Select Categories",
@@ -693,7 +693,7 @@ def main():
         forecast_df = forecast_df[forecast_df['categoryid'].isin(selected_categories)]
     
     # Model selection
-    st.sidebar.subheader("🤖 Model Selection")
+    st.sidebar.subheader("Model Selection")
     
     # Forecasting model selection
     available_forecast_models = []
@@ -704,14 +704,14 @@ def main():
     
     if available_forecast_models:
         selected_forecast_model = st.sidebar.selectbox(
-            "📈 Forecasting Model",
+            "Forecasting Model",
             options=[model[0] for model in available_forecast_models],
             format_func=lambda x: next(model[1] for model in available_forecast_models if model[0] == x),
             index=len(available_forecast_models) - 1 if len(available_forecast_models) > 1 else 0  # Default to tuned if available
         )
     else:
         selected_forecast_model = None
-        st.sidebar.error("❌ No forecasting models available")
+        st.sidebar.error("No forecasting models available")
     
     # Recommendation model selection
     available_reco_models = []
@@ -722,60 +722,60 @@ def main():
     
     if available_reco_models:
         selected_reco_model = st.sidebar.selectbox(
-            "🛍️ Recommendation Model",
+            "Recommendation Model",
             options=[model[0] for model in available_reco_models],
             format_func=lambda x: next(model[1] for model in available_reco_models if model[0] == x),
             index=len(available_reco_models) - 1 if len(available_reco_models) > 1 else 0  # Default to tuned if available
         )
     else:
         selected_reco_model = None
-        st.sidebar.warning("⚠️ Using fallback co-occurrence recommendations")
+        st.sidebar.warning("Using fallback co-occurrence recommendations")
     
     # Model status display
-    st.sidebar.subheader("📊 Model Status")
+    st.sidebar.subheader("Model Status")
     for model_name, model in models.items():
-        status = "✅ Active" if model is not None else "❌ Missing"
+        status = "Active" if model is not None else "Missing"
         model_display = model_name.replace('_', ' ').title()
         is_selected = (model_name == selected_forecast_model) or (model_name == selected_reco_model)
-        selected_indicator = " 🎯" if is_selected else ""
+        selected_indicator = " (Selected)" if is_selected else ""
         st.sidebar.write(f"**{model_display}**: {status}{selected_indicator}")
     
     # =============================================================================
     # MAIN TABS
     # =============================================================================
     
-    tab1, tab2, tab3, tab4 = st.tabs(["📊 Business Intelligence", "🎯 Smart Forecasting", "🛍️ AI Recommendations", "🔍 Individual Analysis"])
+    tab1, tab2, tab3, tab4 = st.tabs(["Business Intelligence", "Smart Forecasting", "AI Recommendations", "Individual Analysis"])
     
     # =============================================================================
     # TAB 1: BUSINESS INTELLIGENCE
     # =============================================================================
     with tab1:
-        st.header("📊 Business Intelligence Dashboard")
+        st.header("Business Intelligence Dashboard")
         
         if forecast_df.empty:
-            st.error("❌ No data available with current filters")
+            st.error("No data available with current filters")
             return
         
         # Key metrics
         col1, col2, col3, col4 = st.columns(4)
         
         with col1:
-            st.metric("📋 Transactions", f"{len(forecast_df):,}")
+            st.metric("Transactions", f"{len(forecast_df):,}")
         
         with col2:
             total_sales = forecast_df['sales'].sum()
-            st.metric("💰 Total Revenue", f"${total_sales:,.2f}")
+            st.metric("Total Revenue", f"${total_sales:,.2f}")
         
         with col3:
             unique_items = forecast_df['itemid'].nunique()
-            st.metric("📦 Active Products", f"{unique_items:,}")
+            st.metric("Active Products", f"{unique_items:,}")
         
         with col4:
             avg_sale = forecast_df['sales'].mean()
-            st.metric("💳 Avg Transaction", f"${avg_sale:.2f}")
+            st.metric("Avg Transaction", f"${avg_sale:.2f}")
         
         # Sales trends
-        st.subheader("📈 Revenue Trends")
+        st.subheader("Revenue Trends")
         daily_sales = forecast_df.groupby('date')['sales'].sum().reset_index()
         
         fig = px.line(
@@ -789,7 +789,7 @@ def main():
         st.plotly_chart(fig, use_container_width=True)
         
         # Category performance with real names
-        st.subheader("🏆 Category Performance Ranking")
+        st.subheader("Category Performance Ranking")
         cat_performance = forecast_df.groupby('categoryid').agg({
             'sales': ['sum', 'count', 'mean']
         }).round(2)
@@ -811,7 +811,7 @@ def main():
         st.plotly_chart(fig, use_container_width=True)
         
         # FIXED: Business insights with proper styling
-        st.subheader("💡 AI-Generated Business Insights")
+        st.subheader("AI-Generated Business Insights")
         insights = generate_business_insights(forecast_df)
         
         for insight in insights:
@@ -825,7 +825,7 @@ def main():
     # TAB 2: SMART FORECASTING  
     # =============================================================================
     with tab2:
-        st.header("🎯 Smart Forecasting Engine")
+        st.header("Smart Forecasting Engine")
         
         # Model performance metrics
         metrics = calculate_metrics(forecast_df['sales'].values, forecast_df['forecast'].values)
@@ -834,16 +834,16 @@ def main():
             col1, col2, col3, col4 = st.columns(4)
             
             with col1:
-                st.metric("🎯 Accuracy (R²)", f"{metrics['r2']:.3f}")
+                st.metric("Accuracy (R²)", f"{metrics['r2']:.3f}")
             with col2:
-                st.metric("📊 Error Rate (MAPE)", f"{metrics['mape']:.1f}%") 
+                st.metric("Error Rate (MAPE)", f"{metrics['mape']:.1f}%") 
             with col3:
-                st.metric("📈 RMSE", f"${metrics['rmse']:.2f}")
+                st.metric("RMSE", f"${metrics['rmse']:.2f}")
             with col4:
-                st.metric("📉 MAE", f"${metrics['mae']:.2f}")
+                st.metric("MAE", f"${metrics['mae']:.2f}")
             
             # Model comparison chart
-            st.subheader("🔍 Forecast vs Reality Analysis")
+            st.subheader("Forecast vs Reality Analysis")
             
             sample_size = min(500, len(forecast_df))
             sample_df = forecast_df.sample(sample_size)
@@ -876,7 +876,7 @@ def main():
             st.plotly_chart(fig, use_container_width=True)
             
             # Time series forecast performance
-            st.subheader("📅 Historical Forecast Performance")
+            st.subheader("Historical Forecast Performance")
             
             daily_comparison = forecast_df.groupby('date').agg({
                 'sales': 'sum', 'forecast': 'sum'
@@ -911,38 +911,148 @@ def main():
     # TAB 3: AI RECOMMENDATIONS
     # =============================================================================
     with tab3:
-        st.header("🛍️ AI-Powered Recommendation Engine")
+        st.header("AI-Powered Recommendation Engine")
         
         if sequences_df.empty:
-            st.error("❌ No recommendation data available")
+            st.error("No recommendation data available")
             return
         
         # Recommendation analytics
         col1, col2, col3 = st.columns(3)
         
         with col1:
-            st.metric("👥 User Sessions", f"{len(sequences_df):,}")
+            st.metric("User Sessions", f"{len(sequences_df):,}")
         with col2:
             avg_length = sequences_df['seq_length'].mean()
-            st.metric("🛒 Avg Session Size", f"{avg_length:.1f} items")
+            st.metric("Avg Session Size", f"{avg_length:.1f} items")
         with col3:
             total_interactions = sequences_df['seq_length'].sum()
-            st.metric("🔄 Total Interactions", f"{total_interactions:,}")
+            st.metric("Total Interactions", f"{total_interactions:,}")
         
         # Session behavior analysis
-        st.subheader("📊 User Behavior Patterns")
+        st.subheader("User Behavior Patterns")
+        
+        # Create a more detailed histogram with better binning and statistics
+        session_lengths = sequences_df['seq_length']
+        
+        # Calculate statistics for better insights
+        avg_length = session_lengths.mean()
+        median_length = session_lengths.median()
+        mode_length = session_lengths.mode().iloc[0] if not session_lengths.mode().empty else 0
+        
+        # Create bins with better spacing for clearer visualization
+        max_length = session_lengths.max()
+        if max_length <= 20:
+            bins = list(range(1, int(max_length) + 2))
+        else:
+            bins = 25
         
         fig = px.histogram(
-            sequences_df, x='seq_length', nbins=20,
-            title="Distribution of Session Lengths (Items per Session)",
-            labels={'seq_length': 'Items in Session', 'count': 'Number of Sessions'},
-            template="plotly_white", color_discrete_sequence=['#dc2626']
+            sequences_df, 
+            x='seq_length', 
+            nbins=bins,
+            title="Shopping Session Analysis: How Many Items Do Users Browse?",
+            labels={
+                'seq_length': 'Number of Items Viewed per Session', 
+                'count': 'Number of User Sessions'
+            },
+            template="plotly_white", 
+            color_discrete_sequence=['#dc2626']
         )
-        fig.update_layout(height=400)
+        
+        # Add statistical reference lines
+        fig.add_vline(
+            x=avg_length, 
+            line_dash="dash", 
+            line_color="orange",
+            annotation_text=f"Average: {avg_length:.1f} items",
+            annotation_position="top"
+        )
+        
+        fig.add_vline(
+            x=median_length, 
+            line_dash="dot", 
+            line_color="green",
+            annotation_text=f"Median: {median_length:.0f} items",
+            annotation_position="bottom right"
+        )
+        
+        # Enhance layout with better formatting
+        fig.update_layout(
+            height=450,
+            xaxis=dict(
+                title="Number of Items Viewed in a Single Session",
+                tickmode='linear',
+                tick0=1,
+                dtick=1 if max_length <= 20 else 2,
+                showgrid=True,
+                gridcolor='lightgray',
+                gridwidth=1
+            ),
+            yaxis=dict(
+                title="Number of User Sessions",
+                showgrid=True,
+                gridcolor='lightgray',
+                gridwidth=1
+            ),
+            bargap=0.2,
+            title_x=0.5
+        )
+        
+        # Add hover template for better interactivity
+        fig.update_traces(
+            hovertemplate="<b>%{x} items viewed</b><br>" +
+                         "Sessions: %{y}<br>" +
+                         "Percentage: %{customdata:.1f}%<extra></extra>"
+        )
+        
+        # Calculate and add percentage data safely
+        try:
+            if fig.data and len(fig.data) > 0 and hasattr(fig.data[0], 'y') and fig.data[0].y is not None:
+                y_values = list(fig.data[0].y)
+                percentages = [(y/len(sequences_df))*100 for y in y_values]
+                fig.update_traces(customdata=percentages)
+        except (AttributeError, TypeError, IndexError):
+            # If there's any issue with customdata, just use basic hover
+            fig.update_traces(
+                hovertemplate="<b>%{x} items viewed</b><br>" +
+                             "Sessions: %{y}<extra></extra>"
+            )
+        
         st.plotly_chart(fig, use_container_width=True)
         
+        # Add interpretation below the chart
+        col1, col2, col3 = st.columns(3)
+        
+        with col1:
+            short_sessions = len(session_lengths[session_lengths <= 3])
+            short_pct = (short_sessions / len(sequences_df)) * 100
+            st.metric(
+                "Quick Browsers", 
+                f"{short_sessions:,} sessions", 
+                f"{short_pct:.1f}% (≤3 items)"
+            )
+        
+        with col2:
+            medium_sessions = len(session_lengths[(session_lengths > 3) & (session_lengths <= 10)])
+            medium_pct = (medium_sessions / len(sequences_df)) * 100
+            st.metric(
+                "Regular Shoppers", 
+                f"{medium_sessions:,} sessions", 
+                f"{medium_pct:.1f}% (4-10 items)"
+            )
+        
+        with col3:
+            long_sessions = len(session_lengths[session_lengths > 10])
+            long_pct = (long_sessions / len(sequences_df)) * 100
+            st.metric(
+                "Deep Explorers", 
+                f"{long_sessions:,} sessions", 
+                f"{long_pct:.1f}% (>10 items)"
+            )
+        
         # Most popular items with real names
-        st.subheader("🏆 Trending Products")
+        st.subheader("Trending Products")
         
         all_items = []
         for seq in sequences_df['item_seq']:
@@ -963,7 +1073,7 @@ def main():
             st.plotly_chart(fig, use_container_width=True)
         
         # Interactive session explorer
-        st.subheader("🔍 Session Explorer")
+        st.subheader("Session Explorer")
         
         session_options = sequences_df['sessionid'].tolist()[:20]
         selected_session = st.selectbox(
@@ -1001,7 +1111,7 @@ def main():
                     st.write("AI Recommendations based on this session:")
                     if recommendations:
                         for i, rec in enumerate(recommendations, 1):
-                            confidence_color = "🟢" if rec['confidence'] > 70 else "🟡" if rec['confidence'] > 40 else "🔴"
+                            confidence_color = "High" if rec['confidence'] > 70 else "Medium" if rec['confidence'] > 40 else "Low"
                             st.markdown(f"""
                             <div class="insight-box">
                                 <p><strong>{i}. Item {rec['item_name']}</strong></p>
@@ -1015,14 +1125,14 @@ def main():
     # TAB 4: INDIVIDUAL ANALYSIS
     # =============================================================================
     with tab4:
-        st.header("🔍 Individual Product & Category Analysis")
+        st.header("Individual Product & Category Analysis")
         
         # Create two columns for product and category analysis
         col_left, col_right = st.columns([1, 1])
         
         with col_left:
             # Individual product analysis
-            st.subheader("📦 Product Deep Dive")
+            st.subheader("Product Deep Dive")
             
             available_items = sorted(forecast_df['itemid'].unique())
             selected_item = st.selectbox(
@@ -1040,19 +1150,19 @@ def main():
                     
                     with col1:
                         total_sales = item_data['sales'].sum()
-                        st.metric("💰 Total Sales", f"${total_sales:,.2f}")
+                        st.metric("Total Sales", f"${total_sales:,.2f}")
                     with col2:
                         avg_sale = item_data['sales'].mean()
-                        st.metric("📊 Average Sale", f"${avg_sale:.2f}")
+                        st.metric("Average Sale", f"${avg_sale:.2f}")
                     with col3:
                         transactions = len(item_data)
-                        st.metric("🛒 Transactions", f"{transactions:,}")
+                        st.metric("Transactions", f"{transactions:,}")
                     
                     # Product info
-                    st.info(f"📂 **Item ID**: {selected_item}")
+                    st.info(f"**Item ID**: {selected_item}")
                     
                     # Individual product forecast chart
-                    st.write("**📈 Sales Performance & Future Forecast**")
+                    st.write("**Sales Performance & Future Forecast**")
                     
                     fig = go.Figure()
                     
@@ -1099,10 +1209,10 @@ def main():
                         growth = ((future_avg - current_avg) / current_avg) * 100 if current_avg > 0 else 0
                         
                         insights = [
-                            f"📊 Current Performance: ${current_avg:.2f} average daily sales",
-                            f"🔮 14-Day Forecast: ${future_avg:.2f} average daily sales",
-                            f"📈 Projected Growth: {growth:+.1f}% vs recent performance",
-                            f"💎 Peak Day: {item_data.loc[item_data['sales'].idxmax(), 'date'].strftime('%Y-%m-%d')} (${item_data['sales'].max():.2f})"
+                            f"Current Performance: ${current_avg:.2f} average daily sales",
+                            f"14-Day Forecast: ${future_avg:.2f} average daily sales",
+                            f"Projected Growth: {growth:+.1f}% vs recent performance",
+                            f"Peak Day: {item_data.loc[item_data['sales'].idxmax(), 'date'].strftime('%Y-%m-%d')} (${item_data['sales'].max():.2f})"
                         ]
                         
                         for insight in insights:
@@ -1117,9 +1227,9 @@ def main():
                         selected_item, sequences_df, models, selected_reco_model
                     )
                     if recommendations:
-                        st.write("🤝 AI-Powered Recommendations:")
+                        st.write("AI-Powered Recommendations:")
                         for i, rec in enumerate(recommendations[:5], 1):
-                            confidence_color = "🟢" if rec['confidence'] > 70 else "🟡" if rec['confidence'] > 40 else "🔴"
+                            confidence_color = "High" if rec['confidence'] > 70 else "Medium" if rec['confidence'] > 40 else "Low"
                             st.markdown(f"""
                             <div class="insight-box">
                                 <p><strong>{i}. Item {rec['item_name']}</strong></p>
@@ -1129,7 +1239,7 @@ def main():
         
         with col_right:
             # Category analysis
-            st.subheader("🏷️ Category Deep Dive")
+            st.subheader("Category Deep Dive")
             
             selected_category = st.selectbox(
                 "Select a category for analysis:",
@@ -1146,16 +1256,16 @@ def main():
                     
                     with col1:
                         cat_revenue = cat_data['sales'].sum()
-                        st.metric("💰 Category Revenue", f"${cat_revenue:,.2f}")
+                        st.metric("Category Revenue", f"${cat_revenue:,.2f}")
                     with col2:
                         cat_items = cat_data['itemid'].nunique()
-                        st.metric("📦 Products", f"{cat_items:,}")
+                        st.metric("Products", f"{cat_items:,}")
                     with col3:
                         cat_avg = cat_data['sales'].mean()
-                        st.metric("📊 Avg Sale", f"${cat_avg:.2f}")
+                        st.metric("Avg Sale", f"${cat_avg:.2f}")
                     
                     # Category forecast chart
-                    st.write("**📈 Category Performance & Future Forecast**")
+                    st.write("**Category Performance & Future Forecast**")
                     
                     daily_cat_sales = cat_data.groupby('date').agg({
                         'sales': 'sum', 'forecast': 'sum'
@@ -1206,10 +1316,10 @@ def main():
                         growth = ((future_avg - current_avg) / current_avg) * 100 if current_avg > 0 else 0
                         
                         insights = [
-                            f"📊 Current Performance: ${current_avg:,.2f} average daily sales",
-                            f"🔮 14-Day Forecast: ${future_avg:,.2f} average daily sales",
-                            f"📈 Projected Growth: {growth:+.1f}% vs recent performance",
-                            f"🏆 Market Share: {(cat_revenue / forecast_df['sales'].sum() * 100):.1f}% of total revenue"
+                            f"Current Performance: ${current_avg:,.2f} average daily sales",
+                            f"14-Day Forecast: ${future_avg:,.2f} average daily sales",
+                            f"Projected Growth: {growth:+.1f}% vs recent performance",
+                            f"Market Share: {(cat_revenue / forecast_df['sales'].sum() * 100):.1f}% of total revenue"
                         ]
                         
                         for insight in insights:
@@ -1222,7 +1332,7 @@ def main():
                     # Top products in category - Show actual data only
                     all_products = cat_data.groupby('itemid')['sales'].sum().sort_values(ascending=False)
                     
-                    st.write(f"**🏆 Top 5 Products in Category {selected_category}:**")
+                    st.write(f"**Top 5 Products in Category {selected_category}:**")
                     if len(all_products) > 0:
                         top_products = all_products.head(5)
                         for i, (item_id, sales) in enumerate(top_products.items(), 1):
