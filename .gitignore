@@ -1,7 +1,6 @@
 
 
 # Model artifacts directory - contains trained models and mappings
-*.json
 *Report.md
 # Report figures - potentially large outputs
 /reports/eda/figures/
