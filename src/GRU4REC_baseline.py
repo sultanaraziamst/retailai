@@ -124,11 +124,23 @@ def main() -> None:
     n_items = int(max(max(s) for s in seqs))
     max_len = reco.get("max_seq_len", 50)
 
+        # Chronological session split by session_end timestamp.
+    # A visitor's later sessions can therefore not leak into training
+    # while their earlier sessions are used for validation.
+    df = df.sort_values("session_end").reset_index(drop=True)
+    cutoff = df["session_end"].quantile(0.8)
+    tr_seqs = df.loc[df["session_end"] <  cutoff, "item_seq"].tolist()
+    va_seqs = df.loc[df["session_end"] >= cutoff, "item_seq"].tolist()
+    tr_ds = _SeqDataset(tr_seqs, max_len)
+    va_ds = _SeqDataset(va_seqs, max_len)
+    print(f"Chronological split at {cutoff}: "
+          f"{len(tr_seqs):,} train sessions, {len(va_seqs):,} val sessions")
+
     # split
-    rng = np.random.RandomState(42)
-    mask = rng.rand(len(seqs)) < 0.8
-    tr_ds = _SeqDataset([s for m, s in zip(mask, seqs) if m], max_len)
-    va_ds = _SeqDataset([s for m, s in zip(mask, seqs) if not m], max_len)
+    # rng = np.random.RandomState(42)
+    # mask = rng.rand(len(seqs)) < 0.8
+    # tr_ds = _SeqDataset([s for m, s in zip(mask, seqs) if m], max_len)
+    # va_ds = _SeqDataset([s for m, s in zip(mask, seqs) if not m], max_len)
 
     tr_loader = DataLoader(tr_ds, batch_size=reco.get("batch", 256),
                            shuffle=True, num_workers=os.cpu_count(),
